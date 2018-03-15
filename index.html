@@ -33,6 +33,19 @@
     </div>
 
     <br>
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <div class="input-group input-group-sm mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-sm">Input Command&nbsp;&nbsp;</span>
+                    </div>
+                    <input type="text" class="form-control" id="input-command" placeholder="Command e.g. add 2 3 4" />
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 </body>
 
@@ -40,5 +53,27 @@
 
 <script>
 
+    // var mips = new MIPS("add 4 6 8");
+    // console.log(mips.command);
+
+    // on change update the control signals
+    $("#input-command").on('blur', function () {
+        recalculateCommand();
+    });
+
+    // resets the divs to make them empty
+    var reset = function () {
+
+    }
+
+    // update the control signals
+    var recalculateCommand = function () {
+        reset();
+        console.log("--------------------------------------------------------");
+        console.log("CALCULATING THE COMMAND AGAIN");
+        var testCommand = $("#input-command").val();
+        console.log("COMMAND:", testCommand);
+        mips = new MIPS(testCommand);
+    }
 
 </script>
