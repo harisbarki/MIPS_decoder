@@ -1,0 +1,42 @@
+.header {
+    color: whitesmoke;
+    background-color: royalblue;
+}
+
+.header-text {
+    padding: 10px;
+}
+
+.body-container {
+    margin-top: 20px;
+}
+
+.control-signals div {
+    vertical-align: middle;
+    text-align: center;
+    width: 35px;
+    /* height: 20px; */
+}
+
+.control-signals span {
+    display: inline-block;
+}
+
+.control-signals .control-vector {
+    border: 1px solid black;
+    height: 30px;
+}
+
+.instruction-type-micro-instruction {
+    vertical-align: middle;
+    text-align: center;
+    margin: 22px 10px 10px 10px;
+    width: 60px;
+    height: 22px;
+}
+
+@media screen and (max-width: 991px) {
+    #program-code {
+        height: 400px;
+    }
+}
