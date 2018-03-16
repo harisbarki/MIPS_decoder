@@ -40,11 +40,56 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text" id="inputGroup-sizing-sm">Input Command&nbsp;&nbsp;</span>
                     </div>
-                    <input type="text" class="form-control" id="input-command" placeholder="Command e.g. add 2 3 4" />
+                    <!-- <input type="text" class="form-control" id="input-command" placeholder="Command e.g. add 2 3 4" /> -->
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- START :: Control Signals, microinstructions and micro program  -->
+    <div class="container-fluid" style="margin-top: 16px;">
+        <div class="row">
+            <!-- START :: Input -->
+            <div class="col-lg-4 col-md-12 justify-content-md-center" style="padding: 0; margin-bottom: 50px">
+                <div style="height: 100%;">
+                    <h3 align="center">
+                        <strong>MIPS (inputs)&nbsp;</strong>
+                    </h3>
+                    <div align="center" style="margin-top: 16px; ">
+                        <button id="example_1" type="button" class="btn btn-primary btn-sm" style="cursor:pointer">Example 1</button>
+                        <button id="example_2" type="button" class="btn btn-primary btn-sm" style="cursor:pointer; margin-left: 40px;">Example 2</button>
+                        <button id="example_3" type="button" class="btn btn-primary btn-sm" style="cursor:pointer; margin-left: 40px;">Example 3</button>
+                    </div>
+                    <div style="padding-left: 5px;margin-top:6px;" align="center">
+                        <small style="font-size: 70%;">* Updating the code below will automatically update the program</small>
+                        <input type="text" class="form-control" id="input-command" placeholder="Command e.g. add 2 3 4" />
+                    </div>
+                    <div style="padding-left: 5px; height: 100%;margin-top:6px;" align="center">
+                        <h4>Register Values</h4>
+                        <div class="row" id="register-input-div">
+                            <div class="col" id="register-input-div-col-0">
+                                <!-- Placeholder -->
+                            </div>
+                            <div class="col" id="register-input-div-col-1">
+                                <!-- Placeholder -->
+                            </div>
+                            <div class="col" id="register-input-div-col-2">
+                                <!-- Placeholder -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END :: Input -->
+            <!-- START :: Main view -->
+            <div class="col-lg-8 col-md-12">
+                <h1>hello</h1>
+            </div>
+            <!-- END :: Main view -->
+
+        </div>
+    </div>
+
 
 
 </body>
@@ -52,6 +97,25 @@
 </html>
 
 <script>
+
+    //Init
+    var init = function () {
+        var registerInputDiv = $('#register-input-div');
+        for (var i = 0; i < 3; i++) {
+            var colDiv = $("#register-input-div-col-" + i);
+
+            for (var j = 0; j < 10; j++) {
+                colDiv.append('<div class="input-group input-group-sm mb-3">'
+                    + '<div class="input-group-prepend">'
+                    + '<span class="input-group-text" id="basic-addon' + i + j + '">1: </span>'
+                    + '</div>'
+                    + '<input type="text" class="form-control" id="input-command" placeholder="e.g. 15" />'
+                    + '</div>');
+
+            }
+
+        }
+    }
 
     // var mips = new MIPS("add 4 6 8");
     // console.log(mips.command);
@@ -75,5 +139,7 @@
         console.log("COMMAND:", testCommand);
         mips = new MIPS(testCommand);
     }
+
+    init();
 
 </script>
