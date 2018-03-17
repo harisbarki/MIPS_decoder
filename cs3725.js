@@ -72,28 +72,58 @@ var MIPS = function (command, registerValues) {
 
 
       self.programCounter += 4;
-
+      self.idBuffer = {};
+      self.idBuffer.PC = self.programCounter;
+      self.idBuffer.RS = self.op1;
+      self.idBuffer.RT = self.op2;
+      
       switch(self.opcode) {
-        case "add":
+          case "add":
           // PC, OP, RS , RT, RD, SHAMT, FUNCT
-          self.idBuffer = [self.programCounter, 0, self.op1, self.op2, self.op3, 0, 32];
+        //   self.idBuffer = [self.programCounter, 0, self.op1, self.op2, self.op3, 0, 32];
+          self.idBuffer.OP = 0;
+          self.idBuffer.RD = self.op3;
+          self.idBuffer.SHAMT = 0;
+          self.idBuffer.FUNCT = 32;
+          self.idBuffer.OFFSET = null;
           break;
-        case "sub":
+          case "sub":
           // PC, OP, RS , RT, RD, SHAMT, FUNCT
-          self.idBuffer = [self.programCounter, 40, self.op1, self.op2, self.op3, 0, 34];
+          //   self.idBuffer = [self.programCounter, 40, self.op1, self.op2, self.op3, 0, 34];
+          self.idBuffer.OP = 40;
+          self.idBuffer.RD = self.op3;
+          self.idBuffer.SHAMT = 0;
+          self.idBuffer.FUNCT = 34;
+          self.idBuffer.OFFSET = null;
           break;
-        case "lw":
+          case "lw":
           // PC, OP, RS , RT, OFFSET
-          self.idBuffer = [self.programCounter, 35, self.op1, self.op2, self.op3];
+          //   self.idBuffer = [self.programCounter, 35, self.op1, self.op2, self.op3];
+          self.idBuffer.OP = 35;
+          self.idBuffer.OFFSET = self.op3;
+          self.idBuffer.RD = null;
+          self.idBuffer.SHAMT = null;
+          self.idBuffer.FUNCT = null;
           break;
-        case "sw":
+          case "sw":
           // PC, OP, RS , RT, OFFSET
-          self.idBuffer = [self.programCounter, 43, self.op1, self.op2, self.op3];
+          //   self.idBuffer = [self.programCounter, 43, self.op1, self.op2, self.op3];
+          self.idBuffer.OP = 43;
+          self.idBuffer.OFFSET = self.op3;
+          self.idBuffer.RD = null;
+          self.idBuffer.SHAMT = null;
+          self.idBuffer.FUNCT = null;
           break;
-        default:
+          default:
           // PC, OP, RS , RT, OFFSET
-          self.idBuffer = [self.programCounter, 4, self.op1, self.op2, self.op3];
-      }
+          //   self.idBuffer = [self.programCounter, 4, self.op1, self.op2, self.op3];
+          self.idBuffer.OP = 4;
+          self.idBuffer.OFFSET = self.op3;
+          self.idBuffer.RD = null;
+          self.idBuffer.SHAMT = null;
+          self.idBuffer.FUNCT = null;
+        }
+        
 
       console.log(self.idBuffer);
 
@@ -116,13 +146,13 @@ var MIPS = function (command, registerValues) {
 
         idBufferBody.append(
           '<tr>' +
-            '<td>' + self.idBuffer[0] + '</td>' +
-            '<td>' + self.idBuffer[1] + '</td>' +
-            '<td>' + self.idBuffer[2] + '</td>' +
-            '<td>' + self.idBuffer[3] + '</td>' +
-            '<td>' + self.idBuffer[4] + '</td>' +
-            '<td>' + self.idBuffer[5] + '</td>' +
-            '<td>' + self.idBuffer[6] + '</td>' +
+            '<td>' + self.idBuffer.PC + '</td>' +
+            '<td>' + self.idBuffer.OP + '</td>' +
+            '<td>' + self.idBuffer.RS + '</td>' +
+            '<td>' + self.idBuffer.RT + '</td>' +
+            '<td>' + self.idBuffer.RD + '</td>' +
+            '<td>' + self.idBuffer.SHAMT + '</td>' +
+            '<td>' + self.idBuffer.FUNCT + '</td>' +
           '</tr>'
         );
       } else {
@@ -139,22 +169,21 @@ var MIPS = function (command, registerValues) {
 
         idBufferBody.append(
           '<tr>' +
-            '<td>' + self.idBuffer[0] + '</td>' +
-            '<td>' + self.idBuffer[1] + '</td>' +
-            '<td>' + self.idBuffer[2] + '</td>' +
-            '<td>' + self.idBuffer[3] + '</td>' +
-            '<td>' + self.idBuffer[4] + '</td>' +
+            '<td>' + self.idBuffer.PC + '</td>' +
+            '<td>' + self.idBuffer.OP + '</td>' +
+            '<td>' + self.idBuffer.RS + '</td>' +
+            '<td>' + self.idBuffer.RT + '</td>' +
+            '<td>' + self.idBuffer.OFFSET + '</td>' +
           '</tr>'
         );
       }
-      
 
       return self.idBuffer;
     }
 
     self.csv = {};
 
-    self.updateControlSignalVector = function (opcode) {
+    self.updateControlSignalVector = function () {
   		// load Control Signal Vector depending on the instruction type
   		if (self.opcode === "add" || self.opcode === "sub") {
   			self.csv["RegDst"] = 1;
@@ -241,7 +270,7 @@ var MIPS = function (command, registerValues) {
         }
         
         // Load op code here
-
+        self.updateControlSignalVector();
         
     }
 
