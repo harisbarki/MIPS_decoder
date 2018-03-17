@@ -282,7 +282,7 @@ var MIPS = function (command, registerValues) {
         var instruction15_0 = null;
         var instruction15_11 = null;
         if(self.opcode === "add" || self.opcode === "sub") {
-            instruction15_0 = self.idBuffer.RD = 'N/A';
+            instruction15_0 = 'N/A';
             instruction15_11 = self.idBuffer.RD;
         } else {
             instruction15_0 = self.idBuffer.RD;
@@ -377,7 +377,7 @@ var MIPS = function (command, registerValues) {
       }
 
       // determine the destination register
-      if (self.csv["RegDst"] === 0) {
+      if (self.csv["RegDst"] == 0) {
         destReg = rt;
         $("#dstReg").text("RegDst is 0, hence $" + destReg + " is the destination register.");
       } else {
@@ -414,71 +414,72 @@ var MIPS = function (command, registerValues) {
     }
 
     self.memory = function () {
-		// Extract buffer contents
-		var branchTargetAddress = self.memBuffer.branchTargetAddress;
-		var zero = self.memBuffer.ZERO;
-		var readAddress = self.memBuffer.readAddress;
-        var writeAddress = self.memBuffer.writeAddress;
-        var aluResult = self.memBuffer.aluResult;
-		var writeData = self.memBuffer.writeData;
-		var destReg = self.memBuffer.destReg;
+  		// Extract buffer contents
+  		var branchTargetAddress = self.memBuffer.branchTargetAddress;
+  		var zero = self.memBuffer.ZERO;
+  		var readAddress = self.memBuffer.readAddress;
+      var writeAddress = self.memBuffer.writeAddress;
+      var aluResult = self.memBuffer.ALURes;
+  		var writeData = self.memBuffer.writeData;
+  		var destReg = self.memBuffer.DSTReg;
+      console.log(destReg);
 
-        // Determine whether to branch
-        console.log(self.csv);
-        var memoryStageHtml = '';
-		if(self.csv.Branch == 0 && zero == 0)
-		{
-            memoryStageHtml +="Branch is 0 and Zero is 0. This is not a beq operation and the operands are not equal. Hence, we do not branch.";
-            memoryStageHtml += "<br>";
-			memoryStageHtml += "The next instruction will be retrieved from the next sequential address (PC + 4): " + self.idBuffer.programCounter + ".";
-		}
-		else if(self.csv.Branch == 0 && zero == 1)
-		{
-			memoryStageHtml += "Branch is 0 and Zero is 1. Even though the operands are equal, this is not a beq operation. Hence, we do not branch.";
-            memoryStageHtml += "<br>";
-			memoryStageHtml += "The next instruction will be retrieved from the next sequential address (PC + 4): " + self.idBuffer.programCounter + ".";
-		}
-		else if (self.csv.Branch == 1 && zero == 0)
-		{
-			memoryStageHtml += "Branch is 1 and Zero is 0. This is a beq operation, but the operands are not equal. Hence, we do not branch.";
-            memoryStageHtml += "<br>";
-			memoryStageHtml += "The next instruction will be retrieved from the next sequential address (PC + 4): " + self.idBuffer.programCounter + ".";
-		}
-		else
-		{
-			memoryStageHtml += "Branch is 1 and Zero is 1. This is a beq operation and the operands are equal. Hence, we must branch.";
-            memoryStageHtml += "<br>";
-			memoryStageHtml += "The next instruction will be retrieved from the branch target address (PC + 4 + 4 * offset): " + branchTargetAddress + ".";
-		}
-        
-        memoryStageHtml += "<br>";
-		// Determine if need to read from or write to data memory
-		if (self.csv.MemWrite == 1 && self.csv.MemRead == 0)						// sw operation
-			memoryStageHtml += "MemWrite is 1, hence " + writeData + " is written to address $" + writeAddress + " in the data memory.";
-		
-		if (self.csv.MemWrite == 0 && self.csv.MemRead == 1)						// lw operation
-			memoryStageHtml += "MemRead is 1, hence " + readData + " is read from address $" + readAddress + " in the data memory.";
+      // Determine whether to branch
+      console.log(self.csv);
+      var memoryStageHtml = '';
+  		if(self.csv.Branch == 0 && zero == 0)
+  		{
+              memoryStageHtml +="Branch is 0 and Zero is 0. This is not a beq operation and the operands are not equal. Hence, we do not branch.";
+              memoryStageHtml += "<br>";
+  			memoryStageHtml += "The next instruction will be retrieved from the next sequential address (PC + 4): " + self.idBuffer.programCounter + ".";
+  		}
+  		else if(self.csv.Branch == 0 && zero == 1)
+  		{
+  			memoryStageHtml += "Branch is 0 and Zero is 1. Even though the operands are equal, this is not a beq operation. Hence, we do not branch.";
+              memoryStageHtml += "<br>";
+  			memoryStageHtml += "The next instruction will be retrieved from the next sequential address (PC + 4): " + self.idBuffer.programCounter + ".";
+  		}
+  		else if (self.csv.Branch == 1 && zero == 0)
+  		{
+  			memoryStageHtml += "Branch is 1 and Zero is 0. This is a beq operation, but the operands are not equal. Hence, we do not branch.";
+              memoryStageHtml += "<br>";
+  			memoryStageHtml += "The next instruction will be retrieved from the next sequential address (PC + 4): " + self.idBuffer.programCounter + ".";
+  		}
+  		else
+  		{
+  			memoryStageHtml += "Branch is 1 and Zero is 1. This is a beq operation and the operands are equal. Hence, we must branch.";
+              memoryStageHtml += "<br>";
+  			memoryStageHtml += "The next instruction will be retrieved from the branch target address (PC + 4 + 4 * offset): " + branchTargetAddress + ".";
+  		}
 
-		if (self.csv.MemWrite == 0 && self.csv.MemRead == 0)						// other
-			memoryStageHtml += "Both MemWrite and MemRead are 0, hence this operation does not require data to be read from or written to the data memory.";
+      memoryStageHtml += "<br>";
+    	// Determine if need to read from or write to data memory
+    	if (self.csv.MemWrite == 1 && self.csv.MemRead == 0)						// sw operation
+    		memoryStageHtml += "MemWrite is 1, hence " + writeData + " is written to address $" + writeAddress + " in the data memory.";
 
-		// Build buffer for next stage (WB)
-		self.bufferWB = {readData: self.readData, aluResult: aluResult, destReg: destReg};
+    	if (self.csv.MemWrite == 0 && self.csv.MemRead == 1)						// lw operation
+    		memoryStageHtml += "MemRead is 1, hence " + readData + " is read from address $" + readAddress + " in the data memory.";
 
-        var bufferHtml = '';
-        bufferHtml += "<td>" + self.bufferWB.readData + "</td>";
-        if(aluResult) {
-            bufferHtml += "<td>" + aluResult + "</td>";
-        } else { 
-            bufferHtml += "<td>N/A</td>"; 
-        }
-        if(destReg) {
-            bufferHtml += "<td>" + self.bufferWB.destReg + "</td>";
-        } else {
-            bufferHtml += "<td>N/A</td>"; 
-        }
-        $('#memory-stage').html(memoryStageHtml);
-        $('#memory-writeback-buffer').html(bufferHtml);
+    	if (self.csv.MemWrite == 0 && self.csv.MemRead == 0)						// other
+    		memoryStageHtml += "Both MemWrite and MemRead are 0, hence this operation does not require data to be read from or written to the data memory.";
+
+    	// Build buffer for next stage (WB)
+    	self.bufferWB = {readData: self.readData, aluResult: aluResult, destReg: destReg};
+
+      var bufferHtml = '';
+      bufferHtml += "<td>" + self.bufferWB.readData + "</td>";
+      if(aluResult) {
+          bufferHtml += "<td>" + aluResult + "</td>";
+      } else {
+          bufferHtml += "<td>N/A</td>";
+      }
+      if(destReg) {
+          bufferHtml += "<td>" + self.bufferWB.destReg + "</td>";
+      } else {
+          bufferHtml += "<td>N/A</td>";
+      }
+      $('#memory-stage').html(memoryStageHtml);
+      $('#memory-writeback-buffer').html(bufferHtml);
 
 
     }
