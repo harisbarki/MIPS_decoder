@@ -74,7 +74,69 @@
             <!-- END :: Input -->
             <!-- START :: Main view -->
             <div class="col-lg-8 col-md-12">
-                <h1>hello</h1>
+                <div class="row">
+                    <div class="col-12">
+                        <h3>Instruction Fetch Stage</h3>
+                        <div id="instruction-fetch-stage">
+                            <!-- Placeholder -->
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <hr>
+                    </div>
+
+                    <div class="col-12">
+                        <h3>Instruction Decode Stage</h3>
+                        <div id="instruction-decode-stage">
+                            <!-- Placeholder -->
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <hr>
+                    </div>
+
+                    <div class="col-12">
+                        <h3>Control Vector</h3>
+                        <div id="control-vector">
+                            <!-- Placeholder -->
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <hr>
+                    </div>
+
+                    <div class="col-12">
+                        <h3>Execute Stage</h3>
+                        <div id="execute-stage">
+                            <!-- Placeholder -->
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <hr>
+                    </div>
+
+                    <div class="col-12">
+                        <h3>Memory Stage</h3>
+                        <div id="memory-stage">
+                            <!-- Placeholder -->
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <hr>
+                    </div>
+
+                    <div class="col-12">
+                        <h3>Write Back Stage</h3>
+                        <div id="write-back-stage">
+                            <!-- Placeholder -->
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- END :: Main view -->
 
@@ -134,7 +196,7 @@
         mips = new MIPS(testCommand, registerValues);
     }
 
-    
+
     init();
     $("#input-command").val('add 4 6 8');
     recalculateCommand();
