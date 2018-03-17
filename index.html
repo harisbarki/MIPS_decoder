@@ -299,31 +299,35 @@
     // on click for example 1 get the example 1
     $("#example_1").click(function () {
         var testCode = Example1();
-        setInputValues(testCode.command, testCode.registerValues);
+        setInputValues(testCode);
         recalculateCommand();
     });
 
     // on click for example 2 get the example 2
     $("#example_2").click(function () {
         var testCode = Example2();
-        setInputValues(testCode.command, testCode.registerValues);
+        setInputValues(testCode);
         recalculateCommand();
     });
 
     // on click for example 3 get the example 3
     $("#example_3").click(function () {
         var testCode = Example3();
-        setInputValues(testCode.command, testCode.registerValues);
+        setInputValues(testCode);
         recalculateCommand();
     });
 
-    var setInputValues = function (command, registerValues) {
-        $("#input-command").val(command);
-        for (var i = 0; i < 3; i++) {
+    var setInputValues = function (inputValues) {
+        $("#input-command").val(inputValues.command);
+        $("#input-readAddr").val(inputValues.readAddr);
+        $("#input-readData").val(inputValues.readData);
+        $("#input-writeAddr").val(inputValues.writeAddr);
+        $("#input-writeData").val(inputValues.writeData);
 
+        for (var i = 0; i < 3; i++) {
             for (var j = 0; j < 10; j++) {
                 var colDiv = $("#register-number-" + i + j);
-                colDiv.val(registerValues[i + j]);
+                colDiv.val(inputValues.registerValues[i + j]);
             }
         }
 
@@ -332,11 +336,6 @@
     // resets the divs to make them empty
     var reset = function () {
         $('#if-body').empty();
-        // $('#input-command').empty();
-        // $('#input-readAddr').empty();
-        // $('#input-readData').empty();
-        // $('#input-writeAddr').empty();
-        // $('#input-writeData').empty();
         $('#memory-stage').empty();
         $('#memory-writeback-buffer').empty();
         $("#if-body").empty();
@@ -364,10 +363,10 @@
         // console.log("--------------------------------------------------------");
         console.log("CALCULATING THE COMMAND AGAIN");
         var testCommand = $("#input-command").val();
-        const _readAddr = $("#input-readAddr").val();
-        const _readData = $("#input-readData").val();
-        const _writeAddr = $("#input-writeAddr").val();
-        const _writeData = $("#input-writeData").val();
+        var _readAddr = $("#input-readAddr").val();
+        var _readData = $("#input-readData").val();
+        var _writeAddr = $("#input-writeAddr").val();
+        var _writeData = $("#input-writeData").val();
         console.log(_readAddr +" "+ _readData +" "+ _writeAddr +" "+ _writeData)
 
         // console.log("COMMAND:", testCommand);
