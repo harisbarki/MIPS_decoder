@@ -280,7 +280,7 @@
                     + '<div class="input-group-prepend">'
                     + '<span class="input-group-text" id="basic-addon' + i + j + '">' + i + j + ': </span>'
                     + '</div>'
-                    + '<input type="number" class="form-control" id="register-number-' + i + j + '" placeholder="e.g. 15" value="' + rand + '" />'
+                    + '<input type="number" class="form-control" onblur="recalculateCommand()" id="register-number-' + i + j + '" placeholder="e.g. 15" value="' + rand + '" />'
                     + '</div>');
 
                 registerValues.push(rand);
