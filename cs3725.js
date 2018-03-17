@@ -403,7 +403,7 @@ var MIPS = function (command, registerValues) {
         exBufferBody.append("<td>N/A</td>");
       else
         exBufferBody.append("<td>" + self.memBuffer.ALURes);
-      exBufferBody.append("<td>" + self.memBuffer.RD2 + "</td>");
+        exBufferBody.append("<td>" + self.memBuffer.RD2 + "</td>");
       if (self.memBuffer.DSTReg === 0)
         exBufferBody.append("<td>N/A</td>");
       else
@@ -458,7 +458,7 @@ var MIPS = function (command, registerValues) {
 		
 		if (self.csv.MemWrite == 0 && self.csv.MemRead == 1)						// lw operation
 			memoryStageHtml += "MemRead is 1, hence " + readData + " is read from address $" + readAddress + " in the data memory.";
-		
+
 		if (self.csv.MemWrite == 0 && self.csv.MemRead == 0)						// other
 			memoryStageHtml += "Both MemWrite and MemRead are 0, hence this operation does not require data to be read from or written to the data memory.";
 
@@ -483,11 +483,38 @@ var MIPS = function (command, registerValues) {
 
     }
 
+    self.writeBack = function () {
+
+  		let readData = self.bufferWB.readData;		// read data from data memory
+  		let aluResult = self.bufferWB.aluResult;	// result from ALU
+  		let destReg = self.bufferWB.destReg;	    // destination register
+  		let writeData = 0;			                  // data for write register
+
+  		if (self.csv["MemToReg"] === 1 && self.csv["RegWrite"] === 1) {
+  			writeData = readData;
+  			$("#write-back-stage").append(
+          "<p>MemToReg is 1 and RegWrite is 1, hence memory data " + writeData + " will be written to write register $" + destReg + ".</p>"
+        );
+  		}
+  		else if (self.csv["MemToReg"] === 0 && self.csv["RegWrite"] === 1) {
+  			writeData = aluResult;
+  			$("#write-back-stage").append(
+          "<p>MemToReg is 0 and RegWrite is 1, hence ALU result " + writeData + " will be written to write register $" + destReg + ".</p>"
+        );
+  		}
+  		else {
+  			$("#write-back-stage").append(
+          "<p>This is either a sw or beq operation. Hence, no data is to be written to the register.</p>"
+        );
+      }
+    }
+
     self.instructionFetch();
     // self.updateControlSignalVector();
     self.instructionDecode();
     self.execute();
     self.memory();
+    self.writeBack();
 
     return self;
 };
