@@ -247,31 +247,58 @@ var MIPS = function (command, registerValues) {
   	}
 
     self.instructionDecode = function () {
-        var html = '';
-        html += "Read register 1 (rs) is $" + self.idBuffer[2] + ".";
-        html += "Read data 1 is " + self.readData1 + ".";
-        html += "Read register 2 (rt) is $" + self.idBuffer[3] + ".";
-        html += "Read data 2 is " + self.readData2 + ".";
-
-        if (self.opcode.equals("add") || self.opcode.equals("sub"))
-			html += "Instruction[15-0] (offset) is not needed for R-type instructions, like add or sub.";
+        var instructionDecodeHtml = '';
+        instructionDecodeHtml += "Read register 1 (rs) is $" + self.idBuffer.RS + ".";
+        instructionDecodeHtml += "<br>";
+        instructionDecodeHtml += "Read data 1 is " + self.readData1 + ".";
+        instructionDecodeHtml += "<br>";
+        instructionDecodeHtml += "Read register 2 (rt) is $" + self.idBuffer.RT + ".";
+        instructionDecodeHtml += "<br>";
+        instructionDecodeHtml += "Read data 2 is " + self.readData2 + ".";
+        instructionDecodeHtml += "<br>";
+        
+        if (self.opcode === "add" || self.opcode === "sub")
+        instructionDecodeHtml += "Instruction[15-0] (offset) is not needed for R-type instructions, like add or sub.";
 		else
-			html += "Instruction[15-0] (offset) is " + self.idBuffer[4];
-
-		if (self.opcode.equals("add") || self.opcode.equals("sub"))
+        instructionDecodeHtml += "Instruction[15-0] (offset) is " + self.idBuffer.OFFSET;
+        
+        instructionDecodeHtml += "<br>";
+        
+		if (self.opcode === "add" || self.opcode === "sub")
 		{
-			html += "Instruction[20-16] (rt) is $" + self.idBuffer[3] + ".";
-			html += "Instruction[15-11] (rd) is $" + self.idBuffer[4] + ".";
+            instructionDecodeHtml += "Instruction[20-16] (rt) is $" + self.idBuffer.RT + ".";
+            instructionDecodeHtml += "<br>";
+			instructionDecodeHtml += "Instruction[15-11] (rd) is $" + self.idBuffer.RD + ".";
 		}
 		else
 		{
-			html += "Instruction[20-16] (rt) is $" + self.idBuffer[3] + ".";
-			html += "Instruction[15-11] (rd) is not needed for I-type instructions, like lw, sw or beq.";
+            instructionDecodeHtml += "Instruction[20-16] (rt) is $" + self.idBuffer.RT + ".";
+            instructionDecodeHtml += "<br>";
+			instructionDecodeHtml += "Instruction[15-11] (rd) is not needed for I-type instructions, like lw, sw or beq.";
         }
+        instructionDecodeHtml += "<br>";
+
         
-        // Load op code here
-        self.updateControlSignalVector();
+        var instruction15_0 = null;
+        var instruction15_11 = null;
+        if(self.opcode === "add" || self.opcode === "sub") {
+            instruction15_0 = self.idBuffer.RD = 'N/A';
+            instruction15_11 = self.idBuffer.RD;
+        } else {
+            instruction15_0 = self.idBuffer.RD;
+            instruction15_11 = 'N/A';
+        }
+        var idExBufferHtml = '';
+        idExBufferHtml += '<td>' + self.idBuffer.PC + '</td>';
+        idExBufferHtml += '<td>' + self.readData1 + '</td>';
+        idExBufferHtml += '<td>' + self.readData2 + '</td>';
+        idExBufferHtml += '<td>' + instruction15_0 + '</td>';
+        idExBufferHtml += '<td>' + self.idBuffer.RT + '</td>';
+        idExBufferHtml += '<td>' + instruction15_11 + '</td>';
         
+        
+        $('#instruction-decode-stage').html(instructionDecodeHtml);
+        $('#id-ex-buffer').html(idExBufferHtml);
     }
 
     self.execute = function() {
@@ -284,6 +311,7 @@ var MIPS = function (command, registerValues) {
 
     self.instructionFetch();
     self.updateControlSignalVector();
+    self.instructionDecode();
 
     return self;
 };
