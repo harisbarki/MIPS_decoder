@@ -425,56 +425,61 @@ var MIPS = function (command, registerValues) {
 
         // Determine whether to branch
         console.log(self.csv);
-        var html = '';
+        var memoryStageHtml = '';
 		if(self.csv.Branch == 0 && zero == 0)
 		{
-			html+="Branch is 0 and Zero is 0. This is not a beq operation and the operands are not equal. Hence, we do not branch.";
-			html += "The next instruction will be retrieved from the next sequential address (PC + 4): " + self.idBuffer.programCounter + ".";
+            memoryStageHtml +="Branch is 0 and Zero is 0. This is not a beq operation and the operands are not equal. Hence, we do not branch.";
+            memoryStageHtml += "<br>";
+			memoryStageHtml += "The next instruction will be retrieved from the next sequential address (PC + 4): " + self.idBuffer.programCounter + ".";
 		}
 		else if(self.csv.Branch == 0 && zero == 1)
 		{
-			html += "Branch is 0 and Zero is 1. Even though the operands are equal, this is not a beq operation. Hence, we do not branch.";
-			html += "The next instruction will be retrieved from the next sequential address (PC + 4): " + self.idBuffer.programCounter + ".";
+			memoryStageHtml += "Branch is 0 and Zero is 1. Even though the operands are equal, this is not a beq operation. Hence, we do not branch.";
+            memoryStageHtml += "<br>";
+			memoryStageHtml += "The next instruction will be retrieved from the next sequential address (PC + 4): " + self.idBuffer.programCounter + ".";
 		}
 		else if (self.csv.Branch == 1 && zero == 0)
 		{
-			html += "Branch is 1 and Zero is 0. This is a beq operation, but the operands are not equal. Hence, we do not branch.";
-			html += "The next instruction will be retrieved from the next sequential address (PC + 4): " + self.idBuffer.programCounter + ".";
+			memoryStageHtml += "Branch is 1 and Zero is 0. This is a beq operation, but the operands are not equal. Hence, we do not branch.";
+            memoryStageHtml += "<br>";
+			memoryStageHtml += "The next instruction will be retrieved from the next sequential address (PC + 4): " + self.idBuffer.programCounter + ".";
 		}
 		else
 		{
-			html += "Branch is 1 and Zero is 1. This is a beq operation and the operands are equal. Hence, we must branch.";
-			html += "The next instruction will be retrieved from the branch target address (PC + 4 + 4 * offset): " + branchTargetAddress + ".";
+			memoryStageHtml += "Branch is 1 and Zero is 1. This is a beq operation and the operands are equal. Hence, we must branch.";
+            memoryStageHtml += "<br>";
+			memoryStageHtml += "The next instruction will be retrieved from the branch target address (PC + 4 + 4 * offset): " + branchTargetAddress + ".";
 		}
-
+        
+        memoryStageHtml += "<br>";
 		// Determine if need to read from or write to data memory
 		if (self.csv.MemWrite == 1 && self.csv.MemRead == 0)						// sw operation
-			html += "MemWrite is 1, hence " + writeData + " is written to address $" + writeAddress + " in the data memory.";
+			memoryStageHtml += "MemWrite is 1, hence " + writeData + " is written to address $" + writeAddress + " in the data memory.";
 		
 		if (self.csv.MemWrite == 0 && self.csv.MemRead == 1)						// lw operation
-			html += "MemRead is 1, hence " + readData + " is read from address $" + readAddress + " in the data memory.";
+			memoryStageHtml += "MemRead is 1, hence " + readData + " is read from address $" + readAddress + " in the data memory.";
 		
 		if (self.csv.MemWrite == 0 && self.csv.MemRead == 0)						// other
-			html += "Both MemWrite and MemRead are 0, hence this operation does not require data to be read from or written to the data memory.";
+			memoryStageHtml += "Both MemWrite and MemRead are 0, hence this operation does not require data to be read from or written to the data memory.";
 
 		// Build buffer for next stage (WB)
 		self.bufferWB = {readData: self.readData, aluResult: aluResult, destReg: destReg};
 
-        console.log(html);
-		// Print buffer
-		// System.out.println("");
-		// System.out.println("MEM/WB Buffer:");
-		// System.out.println("-------------------------------------------");
-		// System.out.println("| Read Data | ALU Result | Dest. Register |");
-		// System.out.println("===========================================");
-		// System.out.print("|     " + bufferWB[0] + "     |     ");
-		// if (opcode.equals("beq"))
-		// 	System.out.print("N/A");
-		// else
-		// 	System.out.print("" + bufferWB[1]);
-		// System.out.println("      |       " + bufferWB[2] + "        |");
-		// System.out.println("-------------------------------------------");
-		// System.out.println("");
+        var bufferHtml = '';
+        bufferHtml += "<td>" + self.bufferWB.readData + "</td>";
+        if(aluResult) {
+            bufferHtml += "<td>" + aluResult + "</td>";
+        } else { 
+            bufferHtml += "<td>N/A</td>"; 
+        }
+        if(destReg) {
+            bufferHtml += "<td>" + self.bufferWB.destReg + "</td>";
+        } else {
+            bufferHtml += "<td>N/A</td>"; 
+        }
+        $('#memory-stage').html(memoryStageHtml);
+        $('#memory-writeback-buffer').html(bufferHtml);
+
 
     }
 
