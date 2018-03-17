@@ -147,15 +147,37 @@ var MIPS = function (command, registerValues) {
           '</tr>'
         );
       }
-
-      console.log(self.idBuffer);
+      
 
       return self.idBuffer;
     }
 
     self.instructionDecode = function () {
         var html = '';
+        html += "Read register 1 (rs) is $" + self.idBuffer[2] + ".";
+        html += "Read data 1 is " + self.readData1 + ".";
+        html += "Read register 2 (rt) is $" + self.idBuffer[3] + ".";
+        html += "Read data 2 is " + self.readData2 + ".";
 
+        if (self.opcode.equals("add") || self.opcode.equals("sub"))
+			html += "Instruction[15-0] (offset) is not needed for R-type instructions, like add or sub.";
+		else
+			html += "Instruction[15-0] (offset) is " + self.idBuffer[4];
+
+		if (self.opcode.equals("add") || self.opcode.equals("sub"))
+		{
+			html += "Instruction[20-16] (rt) is $" + self.idBuffer[3] + ".";
+			html += "Instruction[15-11] (rd) is $" + self.idBuffer[4] + ".";
+		}
+		else
+		{
+			html += "Instruction[20-16] (rt) is $" + self.idBuffer[3] + ".";
+			html += "Instruction[15-11] (rd) is not needed for I-type instructions, like lw, sw or beq.";
+        }
+        
+        // Load op code here
+
+        
     }
 
     self.execute = function() {
