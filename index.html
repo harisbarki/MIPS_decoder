@@ -52,7 +52,7 @@
                         <br>
                         <h4>Command</h4>
                         <small style="font-size: 70%;">* Accepted commands are add, sub, lw, sw, beq.</small>
-                        <input type="text" class="form-control" id="input-command" placeholder="Command e.g. add 2 3 4" />
+                        <input type="text" class="form-control" id="input-command" placeholder="Command e.g. add 2 3 4 15 1 16 3" />
                     </div>
                     <br>
                     <div style="padding-left: 5px;margin-top:6px;" align="center">
@@ -77,9 +77,38 @@
                 <div class="row">
                     <div class="col-12">
                         <h3>Instruction Fetch Stage</h3>
-                        <div id="instruction-fetch-stage">
+                        <div class="row" id="instruction-fetch-stage">
                             <!-- Placeholder -->
+                            <div class="col-md-3">
+                              <h6>[A] Register Values</h6>
+                              <table class="table-striped table-bordered table-condensed">
+                                <thead>
+                                  <tr>
+                                    <th>Register</th>
+                                    <th>Value</th>
+                                  </tr>
+                                </thead>
+                                <tbody id="if-body"></tbody>
+                              </table>
+                            </div>
+
+                            <div class="col-md-3">
+                              <h6>[B] Data Memory</h6>
+                              <p>Read Address: <span id="readAddress"></span> </p>
+                              <p>Read Data: <span id="readData"></span></p>
+                              <p>Write Address: <span id="writeAddress"></span> </p>
+                              <p>Write Data: <span id="writeData"></span></p>
+                            </div>
+
+                            <div class="col-md-3">
+                              <h6>[C] IF/ID Buffer</h6>
+                              <table class="table-striped table-bordered table-condensed">
+                                <thead id="idBufferHead"></thead>
+                                <tbody id="idBufferBody"></tbody>
+                              </table>
+                            </div>
                         </div>
+
                     </div>
 
                     <div class="col-12">
@@ -177,6 +206,13 @@
 
     // on change update the control signals
     $("#input-command").on('blur', function () {
+        $("#if-body").empty();
+        $("#readAddress").empty();
+        $("#readData").empty();
+        $("#writeAddress").empty();
+        $("#writeData").empty();
+        $("#idBufferHead").empty();
+        $("#idBufferBody").empty();
         recalculateCommand();
     });
 
@@ -198,7 +234,7 @@
 
 
     init();
-    $("#input-command").val('add 4 6 8');
+    $("#input-command").val('add 4 6 8 20 1 22 17');
     recalculateCommand();
 
 </script>
