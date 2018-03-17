@@ -360,17 +360,17 @@
     // update the control signals
     var recalculateCommand = function () {
         reset();
-        // console.log("--------------------------------------------------------");
+        console.log("--------------------------------------------------------");
         console.log("CALCULATING THE COMMAND AGAIN");
         var testCommand = $("#input-command").val();
         var _readAddr = $("#input-readAddr").val();
         var _readData = $("#input-readData").val();
         var _writeAddr = $("#input-writeAddr").val();
         var _writeData = $("#input-writeData").val();
-        console.log(_readAddr +" "+ _readData +" "+ _writeAddr +" "+ _writeData)
-
-        // console.log("COMMAND:", testCommand);
-        // console.log("REGISTER VALUES:", registerValues);
+        
+        console.log("COMMAND:", testCommand);
+        console.log("REGISTER VALUES:", registerValues);
+        console.log("readAddr: " + _readAddr +" readData: "+ _readData +" writeAddr: "+ _writeAddr +" writeData: "+ _writeData)
         mips = new MIPS(testCommand, registerValues, _readAddr, _readData, _writeAddr, _writeData);
     }
 

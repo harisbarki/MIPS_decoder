@@ -2,25 +2,17 @@ var MIPS = function (command, registerValues, rdAddr, rdData, wrAddr, wrData) {
     var self = {};
     self.idBuffer = null;
     self.command = command.split(" ");
-    // console.log(self.command);
 
     self.opcode = self.command[0];
     self.op1 = self.command[1];
     self.op2 = self.command[2];
     self.op3 = self.command[3];
-
-    // console.log(self.opcode);
-    console.log(self.op1);
-    console.log(self.op2);
-    console.log(self.op3);
+    self.readAddress = rdAddr;
+    self.readData = rdData;
+    self.writeAddress = wrAddr;
+    self.writeData = wrData;
 
     self.programCounter = 8;
-    // self.readData = 0;
-    //
-    // self.readAddress = rdAddr;
-    // self.readData = rdData;
-    // self.writeAddress = wrAddr;
-    // self.writeData = wrData;
 
     self.instructionFetch = function () {
 
@@ -30,17 +22,6 @@ var MIPS = function (command, registerValues, rdAddr, rdData, wrAddr, wrData) {
       if(self.opcode === "add" || self.opcode === "sub") {
         self.destRegister = registerValues[self.op3];
       }
-
-      // self.readAddress = self.command[4];
-      // self.readData = self.command[5];
-      // self.writeAddress = self.command[6];
-      // self.writeData = self.command[7];
-
-
-      self.readAddress = rdAddr;
-      self.readData = rdData;
-      self.writeAddress = wrAddr;
-      self.writeData = wrData;
 
       let ifBody = $("#if-body");
       if(self.opcode === "add" || self.opcode === "sub") {
@@ -434,10 +415,8 @@ var MIPS = function (command, registerValues, rdAddr, rdData, wrAddr, wrData) {
       var aluResult = self.memBuffer.ALURes;
   		var writeData = self.memBuffer.writeData;
   		var destReg = self.memBuffer.DSTReg;
-      // console.log(destReg);
 
       // Determine whether to branch
-      // console.log(self.csv);
       var memoryStageHtml = '';
   		if(self.csv.Branch == 0 && zero == 0)
   		{
