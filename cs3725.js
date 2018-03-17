@@ -1,6 +1,7 @@
-var MIPS = function (command) {
+var MIPS = function (command, registerValues) {
     var self = {};
     self.command = command.split(" ");
+    self.registerValues = registerValues;
     console.log(self.command);
 
     self.opcode = self.command[0];
