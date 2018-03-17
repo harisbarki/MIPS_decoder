@@ -20,6 +20,9 @@
     <!-- Custom js and css files -->
     <link rel="stylesheet" type="text/css" href="styles.css">
     <script src="cs3725.js"></script>
+    <script src="example_1.js"></script>
+    <script src="example_2.js"></script>
+    <script src="example_3.js"></script>
 
 </head>
 
@@ -284,6 +287,47 @@
 
     // on change update the control signals
     $("#input-command").on('blur', function () {
+        recalculateCommand();
+    });
+
+    // on click for example 1 get the example 1
+    $("#example_1").click(function () {
+        var testCode = Example1();
+        setInputValues(testCode.command, testCode.registerValues);
+        recalculateCommand();
+    });
+
+    // on click for example 2 get the example 2
+    $("#example_2").click(function () {
+        var testCode = Example2();
+        setInputValues(testCode.command, testCode.registerValues);
+        recalculateCommand();
+    });
+
+    // on click for example 3 get the example 3
+    $("#example_3").click(function () {
+        var testCode = Example3();
+        setInputValues(testCode.command, testCode.registerValues);
+        recalculateCommand();
+    });
+
+    var setInputValues = function (command, registerValues) {
+        $("#input-command").val(command);
+        for (var i = 0; i < 3; i++) {
+            
+            for (var j = 0; j < 10; j++) {
+                var colDiv = $("#register-number-" + i + j);
+                colDiv.val(registerValues[i + j]);
+            }
+        }
+
+    }
+
+    // resets the divs to make them empty
+    var reset = function () {
+        $('#if-body').empty();
+        $('#memory-stage').empty();
+        $('#memory-writeback-buffer').empty();
         $("#if-body").empty();
         $("#readAddress").empty();
         $("#readData").empty();
@@ -301,12 +345,6 @@
         $("#dstReg").empty();
         $("#exBufferBody").empty();
         $("#write-back-stage").empty();
-        recalculateCommand();
-    });
-
-    // resets the divs to make them empty
-    var reset = function () {
-
     }
 
     // update the control signals
