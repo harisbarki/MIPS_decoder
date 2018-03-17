@@ -1,4 +1,4 @@
-var MIPS = function (command, registerValues) {
+var MIPS = function (command, registerValues, rdAddr, rdData, wrAddr, wrData) {
     var self = {};
     self.idBuffer = null;
     self.command = command.split(" ");
@@ -10,25 +10,37 @@ var MIPS = function (command, registerValues) {
     self.op3 = self.command[3];
 
     // console.log(self.opcode);
-    // console.log(self.op1);
-    // console.log(self.op2);
-    // console.log(self.op3);
+    console.log(self.op1);
+    console.log(self.op2);
+    console.log(self.op3);
 
     self.programCounter = 8;
     // self.readData = 0;
+    //
+    // self.readAddress = rdAddr;
+    // self.readData = rdData;
+    // self.writeAddress = wrAddr;
+    // self.writeData = wrData;
 
     self.instructionFetch = function () {
 
       self.readData1 = registerValues[self.op1];
       self.readData2 = registerValues[self.op2];
+      // console.log(registerValues[self.op2])
       if(self.opcode === "add" || self.opcode === "sub") {
         self.destRegister = registerValues[self.op3];
       }
 
-      self.readAddress = self.command[4];
-      self.readData = self.command[5];
-      self.writeAddress = self.command[6];
-      self.writeData = self.command[7];
+      // self.readAddress = self.command[4];
+      // self.readData = self.command[5];
+      // self.writeAddress = self.command[6];
+      // self.writeData = self.command[7];
+
+
+      self.readAddress = rdAddr;
+      self.readData = rdData;
+      self.writeAddress = wrAddr;
+      self.writeData = wrData;
 
       let ifBody = $("#if-body");
       if(self.opcode === "add" || self.opcode === "sub") {
@@ -125,7 +137,7 @@ var MIPS = function (command, registerValues) {
         }
 
 
-      console.log(self.idBuffer);
+      // console.log(self.idBuffer);
 
       let idBufferHead = $("#idBufferHead");
       let idBufferBody = $("#idBufferBody");
@@ -422,28 +434,28 @@ var MIPS = function (command, registerValues) {
       var aluResult = self.memBuffer.ALURes;
   		var writeData = self.memBuffer.writeData;
   		var destReg = self.memBuffer.DSTReg;
-      console.log(destReg);
+      // console.log(destReg);
 
       // Determine whether to branch
-      console.log(self.csv);
+      // console.log(self.csv);
       var memoryStageHtml = '';
   		if(self.csv.Branch == 0 && zero == 0)
   		{
               memoryStageHtml +="Branch is 0 and Zero is 0. This is not a beq operation and the operands are not equal. Hence, we do not branch.";
               memoryStageHtml += "<br>";
-  			memoryStageHtml += "The next instruction will be retrieved from the next sequential address (PC + 4): " + self.idBuffer.programCounter + ".";
+  			memoryStageHtml += "The next instruction will be retrieved from the next sequential address (PC + 4): " + self.idBuffer.PC + ".";
   		}
   		else if(self.csv.Branch == 0 && zero == 1)
   		{
   			memoryStageHtml += "Branch is 0 and Zero is 1. Even though the operands are equal, this is not a beq operation. Hence, we do not branch.";
               memoryStageHtml += "<br>";
-  			memoryStageHtml += "The next instruction will be retrieved from the next sequential address (PC + 4): " + self.idBuffer.programCounter + ".";
+  			memoryStageHtml += "The next instruction will be retrieved from the next sequential address (PC + 4): " + self.idBuffer.PC + ".";
   		}
   		else if (self.csv.Branch == 1 && zero == 0)
   		{
   			memoryStageHtml += "Branch is 1 and Zero is 0. This is a beq operation, but the operands are not equal. Hence, we do not branch.";
               memoryStageHtml += "<br>";
-  			memoryStageHtml += "The next instruction will be retrieved from the next sequential address (PC + 4): " + self.idBuffer.programCounter + ".";
+  			memoryStageHtml += "The next instruction will be retrieved from the next sequential address (PC + 4): " + self.idBuffer.PC + ".";
   		}
   		else
   		{
@@ -455,10 +467,10 @@ var MIPS = function (command, registerValues) {
       memoryStageHtml += "<br>";
     	// Determine if need to read from or write to data memory
     	if (self.csv.MemWrite == 1 && self.csv.MemRead == 0)						// sw operation
-    		memoryStageHtml += "MemWrite is 1, hence " + writeData + " is written to address $" + writeAddress + " in the data memory.";
+    		memoryStageHtml += "MemWrite is 1, hence " + self.writeData + " is written to address $" + self.writeAddress + " in the data memory.";
 
     	if (self.csv.MemWrite == 0 && self.csv.MemRead == 1)						// lw operation
-    		memoryStageHtml += "MemRead is 1, hence " + readData + " is read from address $" + readAddress + " in the data memory.";
+    		memoryStageHtml += "MemRead is 1, hence " + self.readData + " is read from address $" + self.readAddress + " in the data memory.";
 
     	if (self.csv.MemWrite == 0 && self.csv.MemRead == 0)						// other
     		memoryStageHtml += "Both MemWrite and MemRead are 0, hence this operation does not require data to be read from or written to the data memory.";

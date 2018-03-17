@@ -55,7 +55,13 @@
                         <br>
                         <h4>Command</h4>
                         <small style="font-size: 70%;">* Accepted commands are add, sub, lw, sw, beq.</small>
-                        <input type="text" class="form-control" id="input-command" placeholder="Command e.g. add 2 3 4 15 1 16 3" />
+                        <input type="text" class="form-control" id="input-command" placeholder="Command e.g. add 2 3 4" />
+                        <input type="number" class="form-control" id="input-readAddr" placeholder="Read Address e.g. 15" />
+                        <input type="number" class="form-control" id="input-readData" placeholder="Read Data e.g. 201" />
+                        <input type="number" class="form-control" id="input-writeAddr" placeholder="Write Address e.g. 16" />
+                        <input type="number" class="form-control" id="input-writeData" placeholder="Write Data e.g. 205" />
+                        <br/>
+                        <button class="btn btn-primary" id="calculate">Calculate</button>
                     </div>
                     <br>
                     <div style="padding-left: 5px;margin-top:6px;" align="center">
@@ -286,9 +292,9 @@
     // console.log(mips.command);
 
     // on change update the control signals
-    $("#input-command").on('blur', function () {
-        recalculateCommand();
-    });
+    // $("#input-command").on('blur', function () {
+    //     recalculateCommand();
+    // });
 
     // on click for example 1 get the example 1
     $("#example_1").click(function () {
@@ -314,7 +320,7 @@
     var setInputValues = function (command, registerValues) {
         $("#input-command").val(command);
         for (var i = 0; i < 3; i++) {
-            
+
             for (var j = 0; j < 10; j++) {
                 var colDiv = $("#register-number-" + i + j);
                 colDiv.val(registerValues[i + j]);
@@ -326,6 +332,11 @@
     // resets the divs to make them empty
     var reset = function () {
         $('#if-body').empty();
+        // $('#input-command').empty();
+        // $('#input-readAddr').empty();
+        // $('#input-readData').empty();
+        // $('#input-writeAddr').empty();
+        // $('#input-writeData').empty();
         $('#memory-stage').empty();
         $('#memory-writeback-buffer').empty();
         $("#if-body").empty();
@@ -350,17 +361,23 @@
     // update the control signals
     var recalculateCommand = function () {
         reset();
-        console.log("--------------------------------------------------------");
+        // console.log("--------------------------------------------------------");
         console.log("CALCULATING THE COMMAND AGAIN");
         var testCommand = $("#input-command").val();
-        console.log("COMMAND:", testCommand);
-        console.log("REGISTER VALUES:", registerValues);
-        mips = new MIPS(testCommand, registerValues);
+        const _readAddr = $("#input-readAddr").val();
+        const _readData = $("#input-readData").val();
+        const _writeAddr = $("#input-writeAddr").val();
+        const _writeData = $("#input-writeData").val();
+        console.log(_readAddr +" "+ _readData +" "+ _writeAddr +" "+ _writeData)
+
+        // console.log("COMMAND:", testCommand);
+        // console.log("REGISTER VALUES:", registerValues);
+        mips = new MIPS(testCommand, registerValues, _readAddr, _readData, _writeAddr, _writeData);
     }
 
 
     init();
-    $("#input-command").val('add 4 6 8 20 1 22 17');
-    recalculateCommand();
+    // $("#input-command").val('add 4 6 8');
+    $("#calculate").on('click', recalculateCommand);
 
 </script>
