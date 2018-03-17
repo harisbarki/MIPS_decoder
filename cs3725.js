@@ -1,5 +1,6 @@
 var MIPS = function (command, registerValues) {
     var self = {};
+    self.idBuffer = null;
     self.command = command.split(" ");
     // console.log(self.command);
 
@@ -147,10 +148,13 @@ var MIPS = function (command, registerValues) {
         );
       }
 
+      console.log(self.idBuffer);
+
       return self.idBuffer;
     }
 
     self.instructionDecode = function () {
+        var html = '';
 
     }
 
