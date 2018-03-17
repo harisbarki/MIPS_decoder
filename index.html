@@ -88,6 +88,7 @@
 </html>
 
 <script>
+    var registerValues = [];
 
     //Init
     var init = function () {
@@ -103,6 +104,8 @@
                     + '</div>'
                     + '<input type="number" class="form-control" id="register-number-' + i + j + '" placeholder="e.g. 15" value="' + rand + '" />'
                     + '</div>');
+
+                registerValues.push(rand);
             }
         }
     }
@@ -127,9 +130,13 @@
         console.log("CALCULATING THE COMMAND AGAIN");
         var testCommand = $("#input-command").val();
         console.log("COMMAND:", testCommand);
-        mips = new MIPS(testCommand);
+        console.log("REGISTER VALUES:", registerValues);
+        mips = new MIPS(testCommand, registerValues);
     }
 
+    
     init();
+    $("#input-command").val('add 4 6 8');
+    recalculateCommand();
 
 </script>
