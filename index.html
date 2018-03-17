@@ -178,7 +178,32 @@
                     <div class="col-12">
                         <h3>Execute Stage</h3>
                         <div id="execute-stage">
-                            <!-- Placeholder -->
+                          <div class="row" id="execute-stage">
+                            <div class="col-md-6">
+                              <p>ADD Result i.e. Branch Target Address: <span id="branchTargetAddress"></span></p>
+                              <p>ALU First Operand: <span id="aluFO"></span></p>
+                              <p>ALU Second Operand: <span id="aluSO"></span></p>
+                              <p>ALU Details: <span id="aluInfo"></span></p>
+                              <p>ALU Result: <span id="aluRes"></span></p>
+                              <p>Zero: <span id="zero"></span></p>
+                              <p>Destination Register: <span id="dstReg"></span></p>
+                            </div>
+                            <div class="col-md-6">
+                              <h6>EX/MEM Buffer</h6>
+                              <table class="table-striped table-bordered table-condensed">
+                                <thead id="exBufferHead">
+                                  <tr>
+                                    <th>Add Result</th>
+                                    <th>Zero</th>
+                                    <th>ALU Result</th>
+                                    <th>Read Data 2</th>
+                                    <th>Destination Register</th>
+                                  </tr>
+                                </thead>
+                                <tbody id="exBufferBody"></tbody>
+                              </table>
+                            </div>
+                          </div>
                         </div>
                     </div>
 
@@ -252,6 +277,14 @@
         $("#idBufferHead").empty();
         $("#idBufferBody").empty();
         $("#controlVector").empty();
+        $("#branchTargetAddress").empty();
+        $("#aluFO").empty();
+        $("#aluSO").empty();
+        $("#aluInfo").empty();
+        $("#aluRes").empty();
+        $("#zero").empty();
+        $("#dstReg").empty();
+        $("#exBufferBody").empty();
         recalculateCommand();
     });
 

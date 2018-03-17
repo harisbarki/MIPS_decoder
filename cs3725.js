@@ -76,7 +76,7 @@ var MIPS = function (command, registerValues) {
       self.idBuffer.PC = self.programCounter;
       self.idBuffer.RS = self.op1;
       self.idBuffer.RT = self.op2;
-      
+
       switch(self.opcode) {
           case "add":
           // PC, OP, RS , RT, RD, SHAMT, FUNCT
@@ -123,7 +123,7 @@ var MIPS = function (command, registerValues) {
           self.idBuffer.SHAMT = null;
           self.idBuffer.FUNCT = null;
         }
-        
+
 
       console.log(self.idBuffer);
 
@@ -256,14 +256,14 @@ var MIPS = function (command, registerValues) {
         instructionDecodeHtml += "<br>";
         instructionDecodeHtml += "Read data 2 is " + self.readData2 + ".";
         instructionDecodeHtml += "<br>";
-        
+
         if (self.opcode === "add" || self.opcode === "sub")
         instructionDecodeHtml += "Instruction[15-0] (offset) is not needed for R-type instructions, like add or sub.";
 		else
         instructionDecodeHtml += "Instruction[15-0] (offset) is " + self.idBuffer.OFFSET;
-        
+
         instructionDecodeHtml += "<br>";
-        
+
 		if (self.opcode === "add" || self.opcode === "sub")
 		{
             instructionDecodeHtml += "Instruction[20-16] (rt) is $" + self.idBuffer.RT + ".";
@@ -278,7 +278,7 @@ var MIPS = function (command, registerValues) {
         }
         instructionDecodeHtml += "<br>";
 
-        
+
         var instruction15_0 = null;
         var instruction15_11 = null;
         if(self.opcode === "add" || self.opcode === "sub") {
@@ -288,6 +288,9 @@ var MIPS = function (command, registerValues) {
             instruction15_0 = self.idBuffer.RD;
             instruction15_11 = 'N/A';
         }
+
+        self.updateControlSignalVector();
+
         var idExBufferHtml = '';
         idExBufferHtml += '<td>' + self.idBuffer.PC + '</td>';
         idExBufferHtml += '<td>' + self.readData1 + '</td>';
@@ -295,14 +298,119 @@ var MIPS = function (command, registerValues) {
         idExBufferHtml += '<td>' + instruction15_0 + '</td>';
         idExBufferHtml += '<td>' + self.idBuffer.RT + '</td>';
         idExBufferHtml += '<td>' + instruction15_11 + '</td>';
-        
-        
+
+
         $('#instruction-decode-stage').html(instructionDecodeHtml);
         $('#id-ex-buffer').html(idExBufferHtml);
     }
 
     self.execute = function() {
+      let pc = self.idBuffer.PC;
+      let firstOperand = self.idBuffer.RS;
+      let readData2 = self.readData2;
+      let offset = self.idBuffer.OFFSET;
+      let rt = self.idBuffer.RT;
+      let rd = self.idBuffer.RD;
 
+      let addResult = 0;
+      let secondOperand = 0;
+      let aluResult = 0;
+      let zero = 0;
+      let destReg = 0;
+
+      self.memBuffer = {};
+
+      // calculate branch target address for beq operation
+      if (self.opcode === "beq") {
+        addResult = pc + (4 * offset);
+        $("#branchTargetAddress").text(addResult + ".");
+      } else {
+        $("#branchTargetAddress").text("'" + self.opcode + "'" + " is not a branch operation.");
+      }
+
+      $("#aluFO").text(firstOperand + ".");
+
+      // calculate second operand input to the ALU
+      if (self.csv["ALUSrc"] === 0) {
+        $("#aluSO").text(readData2 + " since ALU Source is 0.");
+        secondOperand = readData2;
+      } else {
+        $("#aluSO").text(offset + " since ALU Source is 1.");
+        secondOperand = offset;
+      }
+
+      // calculate the ALUresult
+      if (self.csv["ALUOp1"] === 0 && self.csv["ALUOp0"] === 0)	{
+        // lw or sw operation
+        $("#aluInfo").text("Both ALUOp1 and ALUOp0 are 0, this must be a lw or sw operation. ");
+        aluResult = parseInt(firstOperand) + parseInt(secondOperand);
+        $("#aluRes").text(firstOperand + " + " + secondOperand + " = " + aluResult);
+      }
+      else if (self.csv["ALUOp1"] === 1 && self.csv["ALUOp0"] === 0)	{
+        // add or sub operation
+        $("#aluInfo").text("ALUOp1 is 1 and ALUOp0 is 0, ");
+
+        if (self.opcode === "add") {
+          $("#aluInfo").append("<span>and the funct field is 32, this must be an add operation.</span>");
+          aluResult = parseInt(firstOperand) + parseInt(secondOperand);
+          $("#aluRes").text(firstOperand + " + " + secondOperand + " = " + aluResult);
+        }
+        else {
+          $("#aluInfo").append("<span>and the funct field is 34, this must be a sub operation.</span>");
+          aluResult = parseInt(firstOperand) - parseInt(secondOperand);
+          $("#aluRes").text(firstOperand + " - " + secondOperand + " = " + aluResult);
+        }
+      }
+      else if (self.csv["ALUOp1"] === 0 && self.csv["ALUOp0"] === 1)	{
+        // beq operation
+        $("#aluInfo").text("ALUOp1 is 0 and ALUOp0 is 1, this must be a beq operation.");
+        $("#aluRes").text("Not required for beq operation.");
+      }
+
+      // determine if the operands are equal
+      if (firstOperand === secondOperand) {
+        zero = 1;
+        $("#zero").text("1, because the operands are equal.");
+      } else {
+        zero = 0;
+        $("#zero").text("0, because the operands are not equal.");
+      }
+
+      // determine the destination register
+      if (self.csv["RegDst"] === 0) {
+        destReg = rt;
+        $("#dstReg").text("RegDst is 0, hence $" + destReg + " is the destination register.");
+      } else {
+        destReg = rd;
+        $("#dstReg").text("RegDst is 1, hence $" + destReg + " is the destination register.");
+      }
+
+      // Build and return buffer for next stage (MEM)
+      self.memBuffer.ADDRes = addResult;
+      self.memBuffer.ZERO = zero;
+      self.memBuffer.ALURes = aluResult;
+      self.memBuffer.RD2 = readData2;
+      self.memBuffer.DSTReg = destReg;
+
+      let exBufferBody = $("#exBufferBody");
+
+      if (self.memBuffer.ADDRes === 0)
+        exBufferBody.append("<td>N/A</td>");
+      else
+        exBufferBody.append("<td>" + self.memBuffer.ADDRes + "</td>");
+        exBufferBody.append("<td>" + self.memBuffer.ZERO + "</td>");
+      if (self.opcode === "beq")
+        exBufferBody.append("<td>N/A</td>");
+      else
+        exBufferBody.append("<td>" + self.memBuffer.ALURes);
+      exBufferBody.append("<td>" + self.memBuffer.RD2 + "</td>");
+      if (self.memBuffer.DSTReg === 0)
+        exBufferBody.append("<td>N/A</td>");
+      else
+        exBufferBody.append("<td>" + self.memBuffer.DSTReg);
+
+
+      return self.memBuffer;
     }
 
     self.memory = function () {
@@ -310,8 +418,9 @@ var MIPS = function (command, registerValues) {
     }
 
     self.instructionFetch();
-    self.updateControlSignalVector();
+    // self.updateControlSignalVector();
     self.instructionDecode();
+    self.execute();
 
     return self;
 };
