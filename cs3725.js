@@ -150,6 +150,71 @@ var MIPS = function (command, registerValues) {
       return self.idBuffer;
     }
 
+    self.csv = {};
+
+    self.updateControlSignalVector = function (opcode) {
+  		// load Control Signal Vector depending on the instruction type
+  		if (self.opcode === "add" || self.opcode === "sub") {
+  			self.csv["RegDst"] = 1;
+  			self.csv["ALUOp1"] = 1;
+  			self.csv["ALUOp0"] = 0;
+  			self.csv["ALUSrc"] = 0;
+  			self.csv["Branch"] = 0;
+  			self.csv["MemRead"] = 0;
+  			self.csv["MemWrite"] = 0;
+  			self.csv["RegWrite"] = 1;
+  			self.csv["MemToReg"] = 0;
+
+  		}
+  		else if (self.opcode === ("lw")) {
+  			self.csv["RegDst"] = 0;
+  			self.csv["ALUOp1"] = 0;
+  			self.csv["ALUOp0"] = 0;
+  			self.csv["ALUSrc"] = 1;
+  			self.csv["Branch"] = 0;
+  			self.csv["MemRead"] = 1;
+  			self.csv["MemWrite"] = 0;
+  			self.csv["RegWrite"] = 1;
+  			self.csv["MemToReg"] = 1;
+  		}
+  		else if (self.opcode === ("sw")) {
+  			self.csv["RegDst"] = 0;
+  			self.csv["ALUOp1"] = 0;
+  			self.csv["ALUOp0"] = 0;
+  			self.csv["ALUSrc"] = 1;
+  			self.csv["Branch"] = 0;
+  			self.csv["MemRead"] = 0;
+  			self.csv["MemWrite"] = 1;
+  			self.csv["RegWrite"] = 0;
+  			self.csv["MemToReg"] = 0;
+  		}
+  		else {
+  			self.csv["RegDst"] = 0;
+  			self.csv["ALUOp1"] = 0;
+  			self.csv["ALUOp0"] = 1;
+  			self.csv["ALUSrc"] = 0;
+  			self.csv["Branch"] = 1;
+  			self.csv["MemRead"] = 0;
+  			self.csv["MemWrite"] = 0;
+  			self.csv["RegWrite"] = 0;
+  			self.csv["MemToReg"] = 0;
+  		}
+
+      let controlVector = $("#controlVector");
+      controlVector.append(
+        '<td>' + self.csv["RegDst"] + '</td>' +
+        '<td>' + self.csv["ALUOp1"] + '</td>' +
+        '<td>' + self.csv["ALUOp0"] + '</td>' +
+        '<td>' + self.csv["ALUSrc"] + '</td>' +
+        '<td>' + self.csv["Branch"] + '</td>' +
+        '<td>' + self.csv["MemRead"] + '</td>' +
+        '<td>' + self.csv["MemWrite"] + '</td>' +
+        '<td>' + self.csv["RegWrite"] + '</td>' +
+        '<td>' + self.csv["MemToReg"] + '</td>'
+      );
+
+  	}
+
     self.instructionDecode = function () {
 
     }
@@ -163,6 +228,7 @@ var MIPS = function (command, registerValues) {
     }
 
     self.instructionFetch();
+    self.updateControlSignalVector();
 
     return self;
 };
