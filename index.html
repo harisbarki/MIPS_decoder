@@ -32,20 +32,6 @@
         </div>
     </div>
 
-    <br>
-    <div class="container">
-        <div class="row">
-            <div class="col-6">
-                <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="inputGroup-sizing-sm">Input Command&nbsp;&nbsp;</span>
-                    </div>
-                    <!-- <input type="text" class="form-control" id="input-command" placeholder="Command e.g. add 2 3 4" /> -->
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- START :: Control Signals, microinstructions and micro program  -->
     <div class="container-fluid" style="margin-top: 16px;">
         <div class="row">
@@ -61,10 +47,15 @@
                         <button id="example_3" type="button" class="btn btn-primary btn-sm" style="cursor:pointer; margin-left: 40px;">Example 3</button>
                     </div>
                     <div style="padding-left: 5px;margin-top:6px;" align="center">
-                        <small style="font-size: 70%;">* Updating the code below will automatically update the program</small>
+                        <small style="font-size: 70%;">* Updating the inputs below will automatically update the program</small>
+                        <br>
+                        <br>
+                        <h4>Command</h4>
+                        <small style="font-size: 70%;">* Accepted commands are add, sub, lw, sw, beq.</small>
                         <input type="text" class="form-control" id="input-command" placeholder="Command e.g. add 2 3 4" />
                     </div>
-                    <div style="padding-left: 5px; height: 100%;margin-top:6px;" align="center">
+                    <br>
+                    <div style="padding-left: 5px;margin-top:6px;" align="center">
                         <h4>Register Values</h4>
                         <div class="row" id="register-input-div">
                             <div class="col" id="register-input-div-col-0">
@@ -105,15 +96,14 @@
             var colDiv = $("#register-input-div-col-" + i);
 
             for (var j = 0; j < 10; j++) {
+                var rand = Math.floor(Math.random() * 30);
                 colDiv.append('<div class="input-group input-group-sm mb-3">'
                     + '<div class="input-group-prepend">'
-                    + '<span class="input-group-text" id="basic-addon' + i + j + '">1: </span>'
+                    + '<span class="input-group-text" id="basic-addon' + i + j + '">' + i + j + ': </span>'
                     + '</div>'
-                    + '<input type="text" class="form-control" id="input-command" placeholder="e.g. 15" />'
+                    + '<input type="number" class="form-control" id="register-number-' + i + j + '" placeholder="e.g. 15" value="' + rand + '" />'
                     + '</div>');
-
             }
-
         }
     }
 
