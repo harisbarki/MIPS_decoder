@@ -53,13 +53,42 @@
                         <small style="font-size: 70%;">* Updating the inputs below will automatically update the program</small>
                         <br>
                         <br>
-                        <h4>Command</h4>
+                        <h4>Input Commands</h4>
                         <small style="font-size: 70%;">* Accepted commands are add, sub, lw, sw, beq.</small>
-                        <input type="text" class="form-control" id="input-command" placeholder="Command e.g. add 2 3 4" />
-                        <input type="number" class="form-control" id="input-readAddr" placeholder="Read Address e.g. 15" />
-                        <input type="number" class="form-control" id="input-readData" placeholder="Read Data e.g. 201" />
-                        <input type="number" class="form-control" id="input-writeAddr" placeholder="Write Address e.g. 16" />
-                        <input type="number" class="form-control" id="input-writeData" placeholder="Write Data e.g. 205" />
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Command</span>
+                            </div>
+                            <input type="text" class="form-control" id="input-command" placeholder="Command e.g. add 2 3 4" />
+                        </div>
+                        
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">readAddr</span>
+                            </div>
+                            <input type="number" class="form-control" id="input-readAddr" placeholder="Read Address e.g. 15" max="29" min="0"/>
+                        </div>
+
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">readData</span>
+                            </div>
+                            <input type="number" class="form-control" id="input-readData" placeholder="Read Data e.g. 201" max="29" min="0"/>
+                        </div>
+
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">writeAddr</span>
+                            </div>
+                            <input type="number" class="form-control" id="input-writeAddr" placeholder="Write Address e.g. 16" max="29" min="0"/>
+                        </div>
+
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">writeData</span>
+                            </div>
+                            <input type="number" class="form-control" id="input-writeData" placeholder="Write Data e.g. 205" max="29" min="0"/>
+                        </div>
                         <br/>
                         <button class="btn btn-primary" id="calculate">Calculate</button>
                     </div>
@@ -286,6 +315,10 @@
                 registerValues.push(rand);
             }
         }
+
+        var testCode = Example1();
+        setInputValues(testCode);
+        recalculateCommand();
     }
 
     // var mips = new MIPS("add 4 6 8");
