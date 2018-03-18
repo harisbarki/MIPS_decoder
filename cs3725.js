@@ -18,7 +18,6 @@ var MIPS = function (command, registerValues, rdAddr, rdData, wrAddr, wrData) {
 
         self.readData1 = registerValues[self.op1];
         self.readData2 = registerValues[self.op2];
-        // console.log(registerValues[self.op2])
         if (self.opcode === "add" || self.opcode === "sub") {
             self.destRegister = registerValues[self.op3];
         }
@@ -62,7 +61,6 @@ var MIPS = function (command, registerValues, rdAddr, rdData, wrAddr, wrData) {
         $("#readData").text(self.readData);
         $("#writeAddress").text(self.writeAddress);
         $("#writeData").text(self.writeData);
-
 
         self.programCounter += 4;
         self.idBuffer = {};
@@ -116,9 +114,6 @@ var MIPS = function (command, registerValues, rdAddr, rdData, wrAddr, wrData) {
                 self.idBuffer.SHAMT = null;
                 self.idBuffer.FUNCT = null;
         }
-
-
-        // console.log(self.idBuffer);
 
         let idBufferHead = $("#idBufferHead");
         let idBufferBody = $("#idBufferBody");
@@ -474,7 +469,7 @@ var MIPS = function (command, registerValues, rdAddr, rdData, wrAddr, wrData) {
         let readData = self.bufferWB.readData;		// read data from data memory
         let aluResult = self.bufferWB.aluResult;	// result from ALU
         let destReg = self.bufferWB.destReg;	    // destination register
-        let writeData = 0;			                  // data for write register
+        let writeData = 0;			                // data for write register
 
         if (self.csv["MemToReg"] === 1 && self.csv["RegWrite"] === 1) {
             writeData = readData;
