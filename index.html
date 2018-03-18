@@ -61,33 +61,33 @@
                             </div>
                             <input type="text" class="form-control" id="input-command" placeholder="Command e.g. add 2 3 4" />
                         </div>
-                        
+
                         <div class="input-group input-group-sm mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="inputGroup-sizing-sm">readAddr</span>
                             </div>
-                            <input type="number" class="form-control" id="input-readAddr" placeholder="Read Address e.g. 15" max="29" min="0"/>
+                            <input type="number" class="form-control" id="input-readAddr" placeholder="Read Address e.g. 15" max="29" min="0" />
                         </div>
 
                         <div class="input-group input-group-sm mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="inputGroup-sizing-sm">readData</span>
                             </div>
-                            <input type="number" class="form-control" id="input-readData" placeholder="Read Data e.g. 201" max="29" min="0"/>
+                            <input type="number" class="form-control" id="input-readData" placeholder="Read Data e.g. 201" max="29" min="0" />
                         </div>
 
                         <div class="input-group input-group-sm mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="inputGroup-sizing-sm">writeAddr</span>
                             </div>
-                            <input type="number" class="form-control" id="input-writeAddr" placeholder="Write Address e.g. 16" max="29" min="0"/>
+                            <input type="number" class="form-control" id="input-writeAddr" placeholder="Write Address e.g. 16" max="29" min="0" />
                         </div>
 
                         <div class="input-group input-group-sm mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="inputGroup-sizing-sm">writeData</span>
                             </div>
-                            <input type="number" class="form-control" id="input-writeData" placeholder="Write Data e.g. 205" max="29" min="0"/>
+                            <input type="number" class="form-control" id="input-writeData" placeholder="Write Data e.g. 205" max="29" min="0" />
                         </div>
                         <br/>
                         <button class="btn btn-primary" id="calculate">Calculate</button>
@@ -117,38 +117,46 @@
                         <h3>Instruction Fetch Stage</h3>
                         <div class="row" id="instruction-fetch-stage">
                             <div class="col-md-3">
-                              <h6>[A] Register Values</h6>
-                              <table class="table-striped table-bordered table-condensed">
-                                <thead>
-                                  <tr>
-                                    <th>Register</th>
-                                    <th>Value</th>
-                                  </tr>
-                                </thead>
-                                <tbody id="if-body">
-                                    <!-- Placeholder -->
-                                </tbody>
-                              </table>
+                                <h6>[A] Register Values</h6>
+                                <table class="table-striped table-bordered table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th>Register</th>
+                                            <th>Value</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="if-body">
+                                        <!-- Placeholder -->
+                                    </tbody>
+                                </table>
                             </div>
 
                             <div class="col-md-3">
-                              <h6>[B] Data Memory</h6>
-                              <p>Read Address: <span id="readAddress"></span> </p>
-                              <p>Read Data: <span id="readData"></span></p>
-                              <p>Write Address: <span id="writeAddress"></span> </p>
-                              <p>Write Data: <span id="writeData"></span></p>
+                                <h6>[B] Data Memory</h6>
+                                <p>Read Address:
+                                    <span id="readAddress"></span>
+                                </p>
+                                <p>Read Data:
+                                    <span id="readData"></span>
+                                </p>
+                                <p>Write Address:
+                                    <span id="writeAddress"></span>
+                                </p>
+                                <p>Write Data:
+                                    <span id="writeData"></span>
+                                </p>
                             </div>
 
                             <div class="col-md-3">
-                              <h6>[C] IF/ID Buffer</h6>
-                              <table class="table-striped table-bordered table-condensed">
-                                <thead id="idBufferHead">
-                                    <!-- Placeholder -->
-                                </thead>
-                                <tbody id="idBufferBody">
-                                    <!-- Placeholder -->
-                                </tbody>
-                              </table>
+                                <h6>[C] IF/ID Buffer</h6>
+                                <table class="table-striped table-bordered table-condensed">
+                                    <thead id="idBufferHead">
+                                        <!-- Placeholder -->
+                                    </thead>
+                                    <tbody id="idBufferBody">
+                                        <!-- Placeholder -->
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
 
@@ -173,29 +181,29 @@
                         <h3>Control Vector</h3>
                         <div id="control-vector">
                             <table class="table-striped table-bordered table-condensed">
-                              <thead>
-                                <tr>
-                                  <th colspan="4">Execution Stage Control Lines</th>
-                                  <th colspan="3">Memory Stage Control Lines</th>
-                                  <th colspan="2">Write Back Stage Control Lines</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr>
-                                  <td>Reg Dst</td>
-                                  <td>ALU Op1</td>
-                                  <td>ALU Op0</td>
-                                  <td>ALU Src</td>
-                                  <td>Branch</td>
-                                  <td>Mem Read</td>
-                                  <td>Mem Write</td>
-                                  <td>Reg Write</td>
-                                  <td>Mem to Reg</td>
-                                </tr>
-                                <tr id="controlVector">
-                                    <!-- Placeholder -->
-                                </tr>
-                              </tbody>
+                                <thead>
+                                    <tr>
+                                        <th colspan="4">Execution Stage Control Lines</th>
+                                        <th colspan="3">Memory Stage Control Lines</th>
+                                        <th colspan="2">Write Back Stage Control Lines</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Reg Dst</td>
+                                        <td>ALU Op1</td>
+                                        <td>ALU Op0</td>
+                                        <td>ALU Src</td>
+                                        <td>Branch</td>
+                                        <td>Mem Read</td>
+                                        <td>Mem Write</td>
+                                        <td>Reg Write</td>
+                                        <td>Mem to Reg</td>
+                                    </tr>
+                                    <tr id="controlVector">
+                                        <!-- Placeholder -->
+                                    </tr>
+                                </tbody>
                             </table>
                             <br>
                             <h5>ID/EX Buffer:</h5>
@@ -226,34 +234,48 @@
                     <div class="col-12">
                         <h3>Execute Stage</h3>
                         <div id="execute-stage">
-                          <div class="row" id="execute-stage">
-                            <div class="col-md-6">
-                              <p>ADD Result i.e. Branch Target Address: <span id="branchTargetAddress"></span></p>
-                              <p>ALU First Operand: <span id="aluFO"></span></p>
-                              <p>ALU Second Operand: <span id="aluSO"></span></p>
-                              <p>ALU Details: <span id="aluInfo"></span></p>
-                              <p>ALU Result: <span id="aluRes"></span></p>
-                              <p>Zero: <span id="zero"></span></p>
-                              <p>Destination Register: <span id="dstReg"></span></p>
+                            <div class="row" id="execute-stage">
+                                <div class="col-md-6">
+                                    <p>ADD Result i.e. Branch Target Address:
+                                        <span id="branchTargetAddress"></span>
+                                    </p>
+                                    <p>ALU First Operand:
+                                        <span id="aluFO"></span>
+                                    </p>
+                                    <p>ALU Second Operand:
+                                        <span id="aluSO"></span>
+                                    </p>
+                                    <p>ALU Details:
+                                        <span id="aluInfo"></span>
+                                    </p>
+                                    <p>ALU Result:
+                                        <span id="aluRes"></span>
+                                    </p>
+                                    <p>Zero:
+                                        <span id="zero"></span>
+                                    </p>
+                                    <p>Destination Register:
+                                        <span id="dstReg"></span>
+                                    </p>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6>EX/MEM Buffer</h6>
+                                    <table class="table-striped table-bordered table-condensed">
+                                        <thead id="exBufferHead">
+                                            <tr>
+                                                <th>Add Result</th>
+                                                <th>Zero</th>
+                                                <th>ALU Result</th>
+                                                <th>Read Data 2</th>
+                                                <th>Destination Register</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="exBufferBody">
+                                            <!-- Placeholder -->
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                              <h6>EX/MEM Buffer</h6>
-                              <table class="table-striped table-bordered table-condensed">
-                                <thead id="exBufferHead">
-                                  <tr>
-                                    <th>Add Result</th>
-                                    <th>Zero</th>
-                                    <th>ALU Result</th>
-                                    <th>Read Data 2</th>
-                                    <th>Destination Register</th>
-                                  </tr>
-                                </thead>
-                                <tbody id="exBufferBody">
-                                    <!-- Placeholder -->
-                                </tbody>
-                              </table>
-                            </div>
-                          </div>
                         </div>
                     </div>
 
@@ -409,10 +431,10 @@
         var _readData = $("#input-readData").val();
         var _writeAddr = $("#input-writeAddr").val();
         var _writeData = $("#input-writeData").val();
-        
+
         console.log("COMMAND:", testCommand);
         console.log("REGISTER VALUES:", registerValues);
-        console.log("readAddr: " + _readAddr +" readData: "+ _readData +" writeAddr: "+ _writeAddr +" writeData: "+ _writeData)
+        console.log("readAddr: " + _readAddr + " readData: " + _readData + " writeAddr: " + _writeAddr + " writeData: " + _writeData)
         mips = new MIPS(testCommand, registerValues, _readAddr, _readData, _writeAddr, _writeData);
     }
 
