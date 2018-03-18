@@ -59,35 +59,40 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="inputGroup-sizing-sm">Command</span>
                             </div>
-                            <input type="text" class="form-control" id="input-command" onblur="recalculateCommand()" placeholder="Command e.g. add 2 3 4" />
+                            <input type="text" class="form-control" id="input-command" onblur="recalculateCommand()" placeholder="Command e.g. add 2 3 4"
+                            />
                         </div>
 
                         <div class="input-group input-group-sm mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="inputGroup-sizing-sm">readAddr</span>
                             </div>
-                            <input type="number" class="form-control" id="input-readAddr" onblur="recalculateCommand()" placeholder="Read Address e.g. 15" max="29" min="0" />
+                            <input type="number" class="form-control" id="input-readAddr" onblur="recalculateCommand()" placeholder="Read Address e.g. 15"
+                                max="29" min="0" />
                         </div>
 
                         <div class="input-group input-group-sm mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="inputGroup-sizing-sm">readData</span>
                             </div>
-                            <input type="number" class="form-control" id="input-readData" onblur="recalculateCommand()" placeholder="Read Data e.g. 201" max="29" min="0" />
+                            <input type="number" class="form-control" id="input-readData" onblur="recalculateCommand()" placeholder="Read Data e.g. 201"
+                                max="29" min="0" />
                         </div>
 
                         <div class="input-group input-group-sm mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="inputGroup-sizing-sm">writeAddr</span>
                             </div>
-                            <input type="number" class="form-control" id="input-writeAddr" onblur="recalculateCommand()" placeholder="Write Address e.g. 16" max="29" min="0" />
+                            <input type="number" class="form-control" id="input-writeAddr" onblur="recalculateCommand()" placeholder="Write Address e.g. 16"
+                                max="29" min="0" />
                         </div>
 
                         <div class="input-group input-group-sm mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="inputGroup-sizing-sm">writeData</span>
                             </div>
-                            <input type="number" class="form-control" id="input-writeData" onblur="recalculateCommand()" placeholder="Write Data e.g. 205" max="29" min="0" />
+                            <input type="number" class="form-control" id="input-writeData" onblur="recalculateCommand()" placeholder="Write Data e.g. 205"
+                                max="29" min="0" />
                         </div>
                         <br/>
                         <button class="btn btn-primary" id="calculate">Calculate</button>
@@ -347,9 +352,14 @@
             }
         }
 
-        var testCode = Example1();
-        setInputValues(testCode);
-        recalculateCommand();
+        var rand1 = Math.floor(Math.random() * 30);
+        var rand2 = Math.floor(Math.random() * 30);
+        var rand3 = Math.floor(Math.random() * 30);
+        var rand4 = Math.floor(Math.random() * 30);
+        $("#input-readAddr").val(rand1);
+        $("#input-readData").val(rand2);
+        $("#input-writeAddr").val(rand3);
+        $("#input-writeData").val(rand4);
     }
 
     // on change update the control signals
